@@ -33,6 +33,8 @@ namespace s21 {
 
         void CreateVerticalWalls(const size_t &);
 
+        void CreateLastRow();
+
         void CreateHorizontalWalls(const size_t &);
 
         void CopyRow(const size_t &);

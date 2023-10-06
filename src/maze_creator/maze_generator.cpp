@@ -4,7 +4,7 @@
 
 #include "maze_generator.h"
 #include <algorithm>
-#include <random>
+#include <iostream>
 
 namespace s21 {
     MazeGenerator::MazeGenerator(const size_t &width, const size_t &height) :
@@ -20,38 +20,49 @@ namespace s21 {
             CreateHorizontalWalls(i);
             CopyRow(i);
         }
-        CreateVerticalWalls(height_ - 1);
+        CreateLastRow();
     }
 
     void MazeGenerator::CreateVerticalWalls(const size_t &row) {
-        for (size_t i = 0; i < width_ - 1; ++i) {
-            if (maze_[row][i] == maze_[row][i + 1]) {
+        for (size_t i = 0; i < width_ - 1; ++i)
+            if (maze_[row][i] == maze_[row][i + 1])
                 vertical_walls_[row][i] = true;
-            } else {
-                r_.GenerateBool() ? vertical_walls_[row][i] = true : maze_[row][i + 1] = maze_[row][i];
+        for (size_t i = 1; i < width_; ++i) {
+            if (!vertical_walls_[row][i - 1]) {
+                if (r_.GenerateBool()) {
+                    vertical_walls_[row][i - 1] = true;
+                } else {
+                    maze_[row][i] = maze_[row][i - 1];
+                }
             }
         }
     }
 
     void MazeGenerator::CreateHorizontalWalls(const size_t &row) {
-        for (size_t i = 0, set = 0, prev = 0; i < width_ - 1; ++i) {
-            if (maze_[row][i] == maze_[row][i + 1]) {
-                ++set;
-            } else {
-                auto prev_set = set;
-                while (set && prev_set == set) {
-                    for (size_t j = prev; j <= i && set; ++j) {
-                        if (r_.GenerateBool() && !horizontal_walls_[row][j]) {
-                            horizontal_walls_[row][j] = true;
-                            --set;
-                        }
+        for (size_t i = 0, space = 0, standard = maze_[row][0]; i <= width_; ++i) {
+            if (i == width_ || maze_[row][i] != standard) {
+                if (i != width_) standard = maze_[row][i];
+                auto pos = space;
+                while (space > 1 && pos > 0) {
+                    if (r_.GenerateBool()) {
+                        horizontal_walls_[row][i - pos] = true;
+                        --space;
                     }
+                    --pos;
                 }
-                prev = i;
-                set = 0;
+                space = 1;
+            } else {
+                ++space;
             }
         }
     }
+
+    void MazeGenerator::CreateLastRow() {
+        auto row = height_ - 1;
+        for (size_t i = 1; i < width_; ++i)
+            vertical_walls_[height_ - 1][i - 1] = maze_[row][i] == maze_[row][i - 1];
+    }
+
 
     void MazeGenerator::CopyRow(const size_t &row) {
         std::copy(maze_[row].begin(), maze_[row].begin() + static_cast<long>(width_), maze_[row + 1].begin());
@@ -77,9 +88,8 @@ namespace s21 {
             maze_[0][i] = counter_++;
             horizontal_walls_[height_ - 1][i] = true;
         }
-        for (size_t i = 1; i < height_; ++i)
+        for (size_t i = 0; i < height_; ++i)
             vertical_walls_[i][width_ - 1] = true;
     }
-
 
 } // s21
