@@ -5,18 +5,19 @@
 #ifndef MAZE_WINDOW_H
 #define MAZE_WINDOW_H
 
-#include "SFML/Window.hpp"
+#include <SFML/Graphics.hpp>
 
 namespace s21 {
 
     class Window {
     public:
         Window() : window_(sf::VideoMode({width_, height_}), "Base window") {};
-        void Start();
+        void Start(const std::vector<std::vector<bool>> &vertical,
+                   const std::vector<std::vector<bool>> &horizontal);
     private:
-        const unsigned int width_{1000};
-        const unsigned int height_{1000};
-        sf::Window window_;
+        const unsigned int width_{500};
+        const unsigned int height_{700};
+        sf::RenderWindow window_;
     };
 
 } // s21

@@ -13,7 +13,7 @@ namespace s21 {
 
     class MazeGenerator {
     public:
-        using size_t = unsigned long;
+        using size_t = unsigned int;
         using matrix_size_t = std::vector<std::vector<size_t>>;
         using matirx_bool = std::vector<std::vector<bool>>;
 
