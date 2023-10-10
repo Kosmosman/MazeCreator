@@ -15,16 +15,14 @@ add_library(View STATIC
         view/field.h
         view/button.h)
 
-find_package(Qt6 REQUIRED COMPONENTS Widgets)
-target_link_libraries(View PRIVATE Qt6::Widgets)
-
 add_library(Controller INTERFACE controller/view_controller.h)
 target_link_libraries(Controller INTERFACE View MazeCreator)
 target_link_directories(Controller INTERFACE controller)
 
-target_link_libraries(View PRIVATE sfml-graphics sfml-window sfml-system)
+target_link_libraries(View PRIVATE sfml-graphics sfml-window sfml-system Controller)
 target_include_directories(View PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/includes/SFML/include)
 target_include_directories(View PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/view)
+target_include_directories(View PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/controller)
 
 set(SFML_DIR ${CMAKE_CURRENT_SOURCE_DIR}/includes/SFML/include)
 include_directories(${SFML_INCLUDE_DIR})

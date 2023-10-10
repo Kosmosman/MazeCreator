@@ -7,25 +7,24 @@
 
 #include <SFML/Graphics.hpp>
 #include "view.h"
+#include "view_controller.h"
 
 namespace s21 {
 
-    template<typename F = Field, typename B = Button>
+    template<typename F = Field, typename B = Button, typename T = TextTables>
     class Window {
     public:
         Window() : window_(sf::VideoMode({width_, height_}), "Maze") {};
 
-        void Start(F &field, std::vector<B> &buttons);
+        void Start();
 
         bool Status() { return window_.isOpen(); };
-
-        sf::RenderWindow &GetWindow() { return window_; };
 
     private:
         const unsigned int width_{500};
         const unsigned int height_{700};
         sf::RenderWindow window_;
-        typename B::kFunctionality BUTTON_EVENT{B::kFunctionality::NOTHING};
+        ViewController<F, B, T> facade_{};
     };
 
 } // s21

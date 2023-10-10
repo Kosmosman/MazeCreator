@@ -5,6 +5,7 @@
 #include "maze_generator.h"
 #include <algorithm>
 #include <iostream>
+#include <fstream>
 
 namespace s21 {
     MazeGenerator::MazeGenerator() : height_{DEFAULT_VALUE}, width_{DEFAULT_VALUE}, maze_(DEFAULT_VALUE),
@@ -18,6 +19,9 @@ namespace s21 {
 
     void MazeGenerator::Generate() {
         Init();
+        GenerateWithoutInit();
+    }
+    void MazeGenerator::GenerateWithoutInit() {
         for (size_t i = 0; i < height_ - 1; ++i) {
             CreateVerticalWalls(i);
             CreateHorizontalWalls(i);
@@ -25,6 +29,7 @@ namespace s21 {
         }
         CreateLastRow();
     }
+
 
     void MazeGenerator::CreateVerticalWalls(const size_t &row) {
         for (size_t i = 0; i < width_ - 1; ++i) {
@@ -123,6 +128,33 @@ namespace s21 {
             width_ = new_width;
         }
 
+    }
+
+    void MazeGenerator::UploadFile(std::string filename) {
+        std::ifstream f;
+        f.open(filename);
+        if (f.is_open()) {
+            std::cout << "find a file!\n";
+            int N, M;
+            f >> N >> M;
+            Resize(N, M);
+            bool tmp{};
+            for (int i = 0; i < N && f.good(); ++i) {
+                for (int j = 0; j < M; ++j) {
+                    f >> tmp;
+                    vertical_walls_[i][j] = tmp;
+                }
+            }
+            for (int i = 0; i < N && f.good(); ++i) {
+                for (int j = 0; j < M; ++j) {
+                    f >> tmp;
+                    horizontal_walls_[i][j] = tmp;
+                }
+            }
+            GenerateWithoutInit();
+        } else {
+            std::cout << "Can't open file!\n";
+        }
     }
 
 } // s21

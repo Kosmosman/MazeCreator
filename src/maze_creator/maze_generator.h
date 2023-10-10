@@ -22,6 +22,8 @@ namespace s21 {
 
         void Generate();
 
+        void GenerateWithoutInit();
+
         const matrix_bool &GetVerticalWalls() { return vertical_walls_; };
 
         const matrix_bool &GetHorizontalWalls() { return horizontal_walls_; };
@@ -29,6 +31,8 @@ namespace s21 {
         const size_t& GetCountOfWalls() {return  count_of_walls_;};
 
         void Resize(const size_t& new_height, const size_t& new_width);
+
+        void UploadFile(std::string);
 
 
     private:

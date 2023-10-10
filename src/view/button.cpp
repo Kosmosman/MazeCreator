@@ -16,8 +16,10 @@ namespace s21 {
         }
     }
 
-    Button::Button(std::string &&text) {
-        text_.setString(text);
+    Button::Button(std::string &&font) {
+        if (!font_.loadFromFile(font))
+            std::cout << "Error!";
+        text_.setFont(font_);
     }
 
     void Button::SetPosition(sf::Vector2f pos) {
@@ -47,8 +49,8 @@ namespace s21 {
         target.draw(text_, states);
     }
 
-    void Button::FillButton(sf::Vector2f position, sf::Vector2f size, Button::kFunctionality functional, sf::Color text,
-                            sf::Color rect) {
+    void Button::Fill(sf::Vector2f position, sf::Vector2f size, Button::kFunctionality functional, sf::Color text,
+                      sf::Color rect) {
         SetPosition(position);
         SetSize(size);
         SetColor(text, rect);
@@ -61,4 +63,11 @@ namespace s21 {
                position.y >= position_[1] && position.y <= position_[3];
     }
 
+    void TextTables::Fill(sf::Vector2f position, sf::Vector2f size, TextTables::kValue value, sf::Color text,
+                          sf::Color rect) {
+        SetPosition(position);
+        SetSize(size);
+        SetColor(text, rect);
+        SetValue(value);
+    }
 } // s21

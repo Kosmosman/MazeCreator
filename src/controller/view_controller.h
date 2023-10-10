@@ -13,51 +13,82 @@
 
 namespace s21 {
 
-    template<typename F = Field, typename B = Button>
+    template<typename F = Field, typename B = Button, typename T = TextTables>
     class ViewController {
     public:
 
         ViewController() = default;
 
-        void Start() {
+        void Init(sf::Window &win) {
+            window_ = &win;
             buttons_.reserve(3);
             buttons_.emplace_back("includes/Lato-Italic.ttf", "Find way");
-            buttons_.back().FillButton({50, 530}, {80, 32}, B::kFunctionality::FIND_WAY);
+            buttons_.back().Fill({50, 530}, {80, 32}, B::kFunctionality::FIND_WAY);
 
-            buttons_.emplace_back("includes/Lato-Italic.ttf", "Generate maze");
-            buttons_.back().FillButton({50, 580}, {100, 32}, B::kFunctionality::GENERATE_MAZE);
+            buttons_.emplace_back("includes/Lato-Italic.ttf", "Generate maze (x, y)");
+            buttons_.back().Fill({50, 580}, {132, 32}, B::kFunctionality::GENERATE_MAZE);
 
             buttons_.emplace_back("includes/Lato-Italic.ttf", "Load maze from file");
-            buttons_.back().FillButton({50, 630}, {130, 32}, B::kFunctionality::LOAD_MAZE);
+            buttons_.back().Fill({50, 630}, {135, 32}, B::kFunctionality::LOAD_MAZE);
+
+            text_labels_.reserve(3);
+            text_labels_.emplace_back("includes/Lato-Italic.ttf");
+            text_labels_.back().Fill({200, 580}, {32, 32}, T::kValue::X_COORDINATE);
+
+            text_labels_.emplace_back("includes/Lato-Italic.ttf");
+            text_labels_.back().Fill({250, 580}, {32, 32}, T::kValue::Y_COORDINATE);
+
+            text_labels_.emplace_back("includes/Lato-Italic.ttf");
+            text_labels_.back().Fill({200, 630}, {250, 32}, T::kValue::FILENAME);
 
             GenerateHandler();
 
-            std::thread t([this]() { CheckHandler(); });
-            t.detach();
-            window_.Start(field_, buttons_);
+//            std::thread t([this]() { CheckHandler(); });
+//            t.detach();
         }
 
-    private:
-        void CheckHandler() {
-            sf::Vector2i pos{0, 0};
-            while (!window_.Status()) continue;
-            while (window_.Status()) {
-                if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
-                    pos = sf::Mouse::getPosition(window_.GetWindow());
-                    for (auto &i: buttons_) {
-                        if (i.CheckPosition(pos)) {
-                            switch (i.GetFunctional()) {
-                                case B::kFunctionality::GENERATE_MAZE:
-                                    GenerateHandler();
-                                    break;
-                                default:
-                                    break;
-                            }
-                        }
+        std::vector <B> &GetButtons() { return buttons_; };
+
+        std::vector <T> &GetLabels() { return text_labels_; };
+
+        F &GetField() { return field_; };
+
+        void MousePressed(sf::Vector2i pos) {
+            for (auto &i: text_labels_)
+                i.ChangeCondition(false);
+            for (auto &i: buttons_) {
+                if (i.CheckPosition(pos)) {
+                    switch (i.GetFunctional()) {
+                        case B::kFunctionality::GENERATE_MAZE:
+                            GenerateHandler();
+                            break;
+                        case B::kFunctionality::LOAD_MAZE:
+                            LoadHandler();
+                            break;
+                        case B::kFunctionality::FIND_WAY:
+                            FindHandler();
+                            break;
+                        case B::kFunctionality::NOTHING:
+                            break;
                     }
                 }
             }
+            for (auto &i: text_labels_) {
+                if (i.CheckPosition(pos))
+                    LabelsHandler(pos);
+            }
         }
+
+        void KeyboardPressed(sf::Keyboard::Scan sc) {
+            for (auto &i: text_labels_) {
+                if (i.CheckCondition()) {
+                    sc == sf::Keyboard::Scancode::Backspace ? i.Remove() : i.Add(getDescription(sc));
+                    break;
+                }
+            }
+        }
+
+    private:
 
         void GenerateHandler() {
             mg_.Generate();
@@ -66,12 +97,34 @@ namespace s21 {
             std::this_thread::sleep_for(std::chrono::milliseconds(200));
         }
 
+        // NEED FIX IT
         void LoadHandler() {
+            for (auto &i: text_labels_) {
+                if (i.GetValue() == T::kValue::FILENAME) {
+                    mg_.UploadFile(i.GetString());
+                    field_.SetCountOfWalls(mg_.GetCountOfWalls());
+                    field_.CreateMazeGraph(mg_.GetVerticalWalls(), mg_.GetHorizontalWalls());
+                }
+            }
+        }
+
+        void FindHandler() {
 
         }
 
-        Window<F, B> window_{};
-        std::vector<B> buttons_;
+        void LabelsHandler(sf::Vector2i &pos) {
+            for (auto &i: text_labels_) {
+                if (i.CheckPosition(pos)) {
+                    i.ChangeCondition(true);
+                } else {
+                    i.ChangeCondition(false);
+                }
+            }
+        }
+
+        sf::Window *window_;
+        std::vector <B> buttons_;
+        std::vector <T> text_labels_;
         F field_{};
         MazeGenerator mg_;
     };

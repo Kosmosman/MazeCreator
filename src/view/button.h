@@ -6,8 +6,21 @@
 #define MAZE_BUTTON_H
 
 #include <SFML/Graphics.hpp>
+#include <iostream>
+#include <fstream>
 
 namespace s21 {
+
+    class Validator {
+    public:
+        Validator() = default;
+
+        static constexpr int MAX_WALL_SIZE = 50;
+
+        static bool CheckValidCoordinate(std::string &&size) {
+            return stoi(size) <= MAX_WALL_SIZE;
+        }
+    };
 
     class Button : public sf::Drawable {
     public:
@@ -34,37 +47,65 @@ namespace s21 {
 
         kFunctionality &GetFunctional() { return func_; };
 
-        void FillButton(sf::Vector2f position, sf::Vector2f size, kFunctionality functional,
-                        sf::Color text = sf::Color::Black, sf::Color rect = sf::Color::White);
+        void Fill(sf::Vector2f position, sf::Vector2f size, kFunctionality functional = kFunctionality::NOTHING,
+                  sf::Color text = sf::Color::Black, sf::Color rect = sf::Color::White);
 
         bool CheckPosition(sf::Vector2i &position);
 
     protected:
-        sf::Text text_{font_};
-
-    private:
         void draw(sf::RenderTarget &target, const sf::RenderStates &states) const override;
 
+        sf::Text text_{font_};
         sf::Font font_{};
         sf::RectangleShape rect_{};
         // Координаты верхнего левого и нижнего правого углов
         std::vector<int> position_{0, 0, 0, 0};
+
+    private:
         kFunctionality func_{kFunctionality::NOTHING};
+
     };
 
     class TextTables : public Button {
     public:
-        void Add(char ch) { text_.setString(text_.getString() + ch); };
+        enum class kValue {
+            NOTHING,
+            X_COORDINATE,
+            Y_COORDINATE,
+            FILENAME
+        };
+        TextTables(std::string &&font) : Button(std::move(font)) {};
 
-        std::string GetFilename() { return text_.getString(); };
+        void Add(std::string ch) {
+            text_.setString(text_.getString() + ch);
+            std::cout << "Add new key and now frase is << " << text_.getString().toAnsiString() << '\n';
+        };
+
+        void Remove() {
+            if (text_.getString().getSize() > 0) {
+                text_.setString(std::string(text_.getString().begin(), text_.getString().end() - 1));
+            }
+        }
+
+        std::string GetString() { return text_.getString(); };
 
         const bool &CheckCondition() const noexcept { return pressed_; };
 
-        void ChangeCondition() noexcept { pressed_ = !pressed_; };
+        void ChangeCondition(bool condition) noexcept { pressed_ = condition; };
+
+        kValue &GetValue() { return func_; } ;
+
+        void SetValue(kValue k) { func_ = k; };
+
+
+        void Fill(sf::Vector2f position, sf::Vector2f size, kValue value = kValue::NOTHING,
+                  sf::Color text = sf::Color::Black, sf::Color rect = sf::Color::White);
 
     private:
         bool pressed_{};
+        kValue func_{kValue::NOTHING};
     };
+
 
 } // s21
 
