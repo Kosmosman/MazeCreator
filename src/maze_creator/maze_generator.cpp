@@ -24,18 +24,15 @@ namespace s21 {
     }
 
     void MazeGenerator::CreateVerticalWalls(const size_t &row) {
-        for (size_t i = 0; i < width_ - 1; ++i)
-            if (maze_[row][i] == maze_[row][i + 1])
+        for (size_t i = 0; i < width_ - 1; ++i) {
+            bool choice = r_.GenerateBool();
+            if (choice || maze_[row][i] == maze_[row][i + 1]) {
                 vertical_walls_[row][i] = true;
-        for (size_t i = 1; i < width_; ++i) {
-            if (!vertical_walls_[row][i - 1]) {
-                if (r_.GenerateBool()) {
-                    vertical_walls_[row][i - 1] = true;
-                } else {
-                    maze_[row][i] = maze_[row][i - 1];
-                }
+            } else {
+                MergeSet(i, row);
             }
         }
+        vertical_walls_[row][width_ - 1] = true;
     }
 
     void MazeGenerator::CreateHorizontalWalls(const size_t &row) {
@@ -59,8 +56,16 @@ namespace s21 {
 
     void MazeGenerator::CreateLastRow() {
         auto row = height_ - 1;
-        for (size_t i = 1; i < width_; ++i)
-            vertical_walls_[height_ - 1][i - 1] = maze_[row][i] == maze_[row][i - 1];
+        for (size_t i = 0; i < width_ - 1; ++i) {
+            if (maze_[row][i] == maze_[row][i + 1]) {
+                vertical_walls_[row][i] = true;
+            } else {
+                MergeSet(i, row);
+            }
+            horizontal_walls_[row][i] = true;
+        }
+        vertical_walls_[row][width_ - 1] = true;
+        horizontal_walls_[row][width_ - 1] = true;
     }
 
 
@@ -86,10 +91,15 @@ namespace s21 {
         }
         for (size_t i = 0; i < width_; ++i) {
             maze_[0][i] = counter_++;
-            horizontal_walls_[height_ - 1][i] = true;
         }
-        for (size_t i = 0; i < height_; ++i)
-            vertical_walls_[i][width_ - 1] = true;
+    }
+
+    void MazeGenerator::MergeSet(const size_t &col, const size_t& row) {
+        size_t changable_set = maze_[row][col + 1];
+        for (size_t i = 0; i < width_; ++i) {
+            if (maze_[row][i] == changable_set)
+                maze_[row][i] = maze_[row][col];
+        }
     }
 
 } // s21

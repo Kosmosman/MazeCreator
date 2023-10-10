@@ -12,9 +12,9 @@ namespace s21 {
     class Randomizer {
     public:
 
-        explicit Randomizer() : mt_(rd_()), dist_(0, 10) {};
+        explicit Randomizer() : mt_(rd_()), dist_(0, 1) {};
 
-        bool GenerateBool() { return dist_(mt_) % 2; };
+        bool GenerateBool() { return dist_(mt_) % 2 == 0; };
 
 
     private:

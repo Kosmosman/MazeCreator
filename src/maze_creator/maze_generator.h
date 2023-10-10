@@ -25,6 +25,8 @@ namespace s21 {
 
         const matirx_bool &GetHorizontalWalls() { return horizontal_walls_; };
 
+        const matrix_size_t &GetMaze() {return maze_;};
+
 
     private:
         void Init();
@@ -33,9 +35,11 @@ namespace s21 {
 
         void CreateVerticalWalls(const size_t &);
 
+        void CreateHorizontalWalls(const size_t &);
+
         void CreateLastRow();
 
-        void CreateHorizontalWalls(const size_t &);
+        void MergeSet(const size_t& col, const size_t& row);
 
         void CopyRow(const size_t &);
 

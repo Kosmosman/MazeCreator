@@ -9,7 +9,7 @@
 
 int main() {
     s21::Window w;
-    s21::MazeGenerator m(50, 50);
+    s21::MazeGenerator m(10, 10);
     m.Generate();
     for (const auto& i: m.GetHorizontalWalls()) {
         for (const auto& j: i) {
@@ -19,6 +19,13 @@ int main() {
     }
     std::cout << '\n';
     for (const auto& i: m.GetVerticalWalls()) {
+        for (const auto& j: i) {
+            std::cout << j;
+        }
+        std::cout << '\n';
+    }
+    std::cout << '\n';
+    for (const auto& i: m.GetMaze()) {
         for (const auto& j: i) {
             std::cout << j;
         }
