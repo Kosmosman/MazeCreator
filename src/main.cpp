@@ -24,13 +24,6 @@ int main() {
         }
         std::cout << '\n';
     }
-    std::cout << '\n';
-    for (const auto& i: m.GetMaze()) {
-        for (const auto& j: i) {
-            std::cout << j;
-        }
-        std::cout << '\n';
-    }
     w.Start(m.GetVerticalWalls(), m.GetHorizontalWalls());
     return 0;
 }

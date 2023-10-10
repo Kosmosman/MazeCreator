@@ -9,7 +9,7 @@
 namespace s21 {
     MazeGenerator::MazeGenerator(const size_t &width, const size_t &height) :
             height_{height}, width_{width},
-            maze_(height, std::vector<size_t>(width)),
+            maze_(width),
             horizontal_walls_(height, std::vector<bool>(width)),
             vertical_walls_(height, std::vector<bool>(width)) {}
 
@@ -26,19 +26,19 @@ namespace s21 {
     void MazeGenerator::CreateVerticalWalls(const size_t &row) {
         for (size_t i = 0; i < width_ - 1; ++i) {
             bool choice = r_.GenerateBool();
-            if (choice || maze_[row][i] == maze_[row][i + 1]) {
+            if (choice || maze_[i] == maze_[i + 1]) {
                 vertical_walls_[row][i] = true;
             } else {
-                MergeSet(i, row);
+                MergeSet(i);
             }
         }
         vertical_walls_[row][width_ - 1] = true;
     }
 
     void MazeGenerator::CreateHorizontalWalls(const size_t &row) {
-        for (size_t i = 0, space = 0, standard = maze_[row][0]; i <= width_; ++i) {
-            if (i == width_ || maze_[row][i] != standard) {
-                if (i != width_) standard = maze_[row][i];
+        for (size_t i = 0, space = 0, standard = maze_[0]; i <= width_; ++i) {
+            if (i == width_ || maze_[i] != standard) {
+                if (i != width_) standard = maze_[i];
                 auto pos = space;
                 while (space > 1 && pos > 0) {
                     if (r_.GenerateBool()) {
@@ -57,10 +57,10 @@ namespace s21 {
     void MazeGenerator::CreateLastRow() {
         auto row = height_ - 1;
         for (size_t i = 0; i < width_ - 1; ++i) {
-            if (maze_[row][i] == maze_[row][i + 1]) {
+            if (maze_[i] == maze_[i + 1]) {
                 vertical_walls_[row][i] = true;
             } else {
-                MergeSet(i, row);
+                MergeSet(i);
             }
             horizontal_walls_[row][i] = true;
         }
@@ -70,10 +70,9 @@ namespace s21 {
 
 
     void MazeGenerator::CopyRow(const size_t &row) {
-        std::copy(maze_[row].begin(), maze_[row].begin() + static_cast<long>(width_), maze_[row + 1].begin());
         for (size_t i = 0; i < width_; ++i)
             if (horizontal_walls_[row][i])
-                maze_[row + 1][i] = counter_++;
+                maze_[i] = counter_++;
     }
 
     void MazeGenerator::Reset() {
@@ -85,20 +84,20 @@ namespace s21 {
 
     void MazeGenerator::Init() {
         for (size_t i = 0; i < height_; ++i) {
-            std::fill(maze_[i].begin(), maze_[i].end(), 0);
+            std::fill(maze_.begin(), maze_.end(), 0);
             std::fill(horizontal_walls_[i].begin(), horizontal_walls_[i].end(), false);
             std::fill(vertical_walls_[i].begin(), vertical_walls_[i].end(), false);
         }
         for (size_t i = 0; i < width_; ++i) {
-            maze_[0][i] = counter_++;
+            maze_[i] = counter_++;
         }
     }
 
-    void MazeGenerator::MergeSet(const size_t &col, const size_t& row) {
-        size_t changable_set = maze_[row][col + 1];
+    void MazeGenerator::MergeSet(const size_t &col) {
+        size_t changeable_set = maze_[col + 1];
         for (size_t i = 0; i < width_; ++i) {
-            if (maze_[row][i] == changable_set)
-                maze_[row][i] = maze_[row][col];
+            if (maze_[i] == changeable_set)
+                maze_[i] = maze_[col];
         }
     }
 

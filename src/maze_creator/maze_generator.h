@@ -14,7 +14,6 @@ namespace s21 {
     class MazeGenerator {
     public:
         using size_t = unsigned int;
-        using matrix_size_t = std::vector<std::vector<size_t>>;
         using matirx_bool = std::vector<std::vector<bool>>;
 
         explicit MazeGenerator(const size_t &width, const size_t &height);
@@ -24,8 +23,6 @@ namespace s21 {
         const matirx_bool &GetVerticalWalls() { return vertical_walls_; };
 
         const matirx_bool &GetHorizontalWalls() { return horizontal_walls_; };
-
-        const matrix_size_t &GetMaze() {return maze_;};
 
 
     private:
@@ -39,14 +36,14 @@ namespace s21 {
 
         void CreateLastRow();
 
-        void MergeSet(const size_t& col, const size_t& row);
+        void MergeSet(const size_t& col);
 
         void CopyRow(const size_t &);
 
         size_t height_;
         size_t width_;
         size_t counter_{};
-        matrix_size_t maze_;
+        std::vector<size_t> maze_;
         matirx_bool horizontal_walls_;
         matirx_bool vertical_walls_;
         Randomizer r_{};
