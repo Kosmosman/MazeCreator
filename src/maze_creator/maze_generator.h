@@ -14,15 +14,21 @@ namespace s21 {
     class MazeGenerator {
     public:
         using size_t = unsigned int;
-        using matirx_bool = std::vector<std::vector<bool>>;
+        using matrix_bool = std::vector<std::vector<bool>>;
+        static constexpr size_t DEFAULT_VALUE = 10;
 
+        MazeGenerator();
         explicit MazeGenerator(const size_t &width, const size_t &height);
 
         void Generate();
 
-        const matirx_bool &GetVerticalWalls() { return vertical_walls_; };
+        const matrix_bool &GetVerticalWalls() { return vertical_walls_; };
 
-        const matirx_bool &GetHorizontalWalls() { return horizontal_walls_; };
+        const matrix_bool &GetHorizontalWalls() { return horizontal_walls_; };
+
+        const size_t& GetCountOfWalls() {return  count_of_walls_;};
+
+        void Resize(const size_t& new_height, const size_t& new_width);
 
 
     private:
@@ -43,9 +49,10 @@ namespace s21 {
         size_t height_;
         size_t width_;
         size_t counter_{};
+        size_t count_of_walls_{};
         std::vector<size_t> maze_;
-        matirx_bool horizontal_walls_;
-        matirx_bool vertical_walls_;
+        matrix_bool horizontal_walls_;
+        matrix_bool vertical_walls_;
         Randomizer r_{};
     };
 

@@ -16,18 +16,21 @@ namespace s21 {
 
         Field() { StartInitialize(); }
 
-        void Resize(const Field::size_t &new_height, const Field::size_t &new_width);
-
         void CreateMazeGraph(const std::vector<std::vector<bool>> &vertical,
                              const std::vector<std::vector<bool>> &horizontal);
 
+        void SetCountOfWalls(const size_t &count) { count_of_walls_ = count; };
+
     private:
         void draw(sf::RenderTarget &target, const sf::RenderStates &states) const override;
+
+        void CreateField(const Field::size_t &new_height, const Field::size_t &new_width);
 
         void StartInitialize();
 
         size_t height_{};
         size_t width_{};
+        size_t count_of_walls_{15000};
         sf::VertexArray vertexes_;
         sf::VertexArray walls_;
     };

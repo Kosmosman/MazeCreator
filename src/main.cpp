@@ -6,24 +6,12 @@
 
 #include <iostream>
 #include <window.h>
+#include "controller/view_controller.h"
 
 int main() {
-    s21::Window w;
-    s21::MazeGenerator m(10, 10);
-    m.Generate();
-    for (const auto& i: m.GetHorizontalWalls()) {
-        for (const auto& j: i) {
-            std::cout << j;
-        }
-        std::cout << '\n';
-    }
-    std::cout << '\n';
-    for (const auto& i: m.GetVerticalWalls()) {
-        for (const auto& j: i) {
-            std::cout << j;
-        }
-        std::cout << '\n';
-    }
-    w.Start(m.GetVerticalWalls(), m.GetHorizontalWalls());
+//    s21::Window<s21::Field, s21::Button> w;
+//    s21::MazeGenerator m(10, 10);
+    s21::ViewController<> v;
+    v.Start();
     return 0;
 }

@@ -5,7 +5,7 @@
 #include "field.h"
 
 namespace s21 {
-    void Field::Resize(const Field::size_t &new_height, const Field::size_t &new_width) {
+    void Field::CreateField(const Field::size_t &new_height, const Field::size_t &new_width) {
         if (height_ != new_height || width_ != new_width) {
             height_ = new_height;
             width_ = new_width;
@@ -30,22 +30,10 @@ namespace s21 {
         }
     }
 
-    void Field::StartInitialize() {
-        vertexes_.setPrimitiveType(sf::PrimitiveType::LineStrip);
-        walls_.setPrimitiveType(sf::PrimitiveType::Triangles);
-        vertexes_.resize(VERTEX_COUNT_MAX);
-        // Fix it next time
-        walls_.resize(VERTEX_COUNT_MAX + VERTEX_COUNT_MAX/2);
-    }
-
-    void Field::draw(sf::RenderTarget &target, const sf::RenderStates &states) const {
-        target.draw(vertexes_, states);
-        target.draw(walls_, states);
-    }
-
     void Field::CreateMazeGraph(const std::vector<std::vector<bool>> &vertical,
                                 const std::vector<std::vector<bool>> &horizontal) {
-        Resize(vertical.size(), vertical[0].size());
+        CreateField(vertical.size(), vertical[0].size());
+        walls_.resize(count_of_walls_ * 6);
         size_t pos{0};
         for (size_t i = 0; i < height_; ++i) {
             for (size_t j = 0; j < width_; ++j) {
@@ -78,5 +66,15 @@ namespace s21 {
             }
         }
         walls_.resize(pos);
+    }
+
+    void Field::StartInitialize() {
+        vertexes_.setPrimitiveType(sf::PrimitiveType::LineStrip);
+        walls_.setPrimitiveType(sf::PrimitiveType::Triangles);
+    }
+
+    void Field::draw(sf::RenderTarget &target, const sf::RenderStates &states) const {
+        target.draw(vertexes_, states);
+        target.draw(walls_, states);
     }
 } // namespace s21
