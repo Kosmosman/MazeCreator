@@ -5,9 +5,7 @@
 #ifndef MAZE_VIEW_CONTROLLER_H
 #define MAZE_VIEW_CONTROLLER_H
 
-#include "window.h"
-#include "button.h"
-#include "field.h"
+#include "view.h"
 #include "maze_generator.h"
 
 #include <thread>
@@ -32,19 +30,17 @@ namespace s21 {
             buttons_.emplace_back("includes/Lato-Italic.ttf", "Load maze from file");
             buttons_.back().FillButton({50, 630}, {130, 32}, B::kFunctionality::LOAD_MAZE);
 
-            mg_.Generate();
-            field_.SetCountOfWalls(mg_.GetCountOfWalls());
-            field_.CreateMazeGraph(mg_.GetVerticalWalls(), mg_.GetHorizontalWalls());
+            GenerateHandler();
+
             std::thread t([this]() { CheckHandler(); });
+            t.detach();
             window_.Start(field_, buttons_);
-            t.join();
         }
 
     private:
         void CheckHandler() {
             sf::Vector2i pos{0, 0};
-            while (!window_.Status())
-                continue;
+            while (!window_.Status()) continue;
             while (window_.Status()) {
                 if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
                     pos = sf::Mouse::getPosition(window_.GetWindow());
@@ -52,9 +48,7 @@ namespace s21 {
                         if (i.CheckPosition(pos)) {
                             switch (i.GetFunctional()) {
                                 case B::kFunctionality::GENERATE_MAZE:
-                                    mg_.Generate();
-                                    field_.CreateMazeGraph(mg_.GetVerticalWalls(), mg_.GetHorizontalWalls());
-                                    std::this_thread::sleep_for(std::chrono::milliseconds (200));
+                                    GenerateHandler();
                                     break;
                                 default:
                                     break;
@@ -63,6 +57,17 @@ namespace s21 {
                     }
                 }
             }
+        }
+
+        void GenerateHandler() {
+            mg_.Generate();
+            field_.SetCountOfWalls(mg_.GetCountOfWalls());
+            field_.CreateMazeGraph(mg_.GetVerticalWalls(), mg_.GetHorizontalWalls());
+            std::this_thread::sleep_for(std::chrono::milliseconds(200));
+        }
+
+        void LoadHandler() {
+
         }
 
         Window<F, B> window_{};

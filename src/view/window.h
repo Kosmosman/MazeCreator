@@ -6,8 +6,7 @@
 #define MAZE_WINDOW_H
 
 #include <SFML/Graphics.hpp>
-#include "field.h"
-#include "button.h"
+#include "view.h"
 
 namespace s21 {
 
@@ -16,14 +15,11 @@ namespace s21 {
     public:
         Window() : window_(sf::VideoMode({width_, height_}), "Maze") {};
 
-        void Start(const std::vector<std::vector<bool>> &vertical,
-                   const std::vector<std::vector<bool>> &horizontal);
-
         void Start(F &field, std::vector<B> &buttons);
 
-        bool Status() {return window_.isOpen();};
+        bool Status() { return window_.isOpen(); };
 
-        sf::RenderWindow& GetWindow() {return window_;};
+        sf::RenderWindow &GetWindow() { return window_; };
 
     private:
         const unsigned int width_{500};

@@ -3,24 +3,8 @@
 //
 
 #include "window.h"
-namespace s21 {
-    template<typename F, typename B>
-    void Window<F, B>::Start(const std::vector<std::vector<bool>> &vertical,
-                       const std::vector<std::vector<bool>> &horizontal) {
-//        Field f;
-//        f.CreateMazeGraph(vertical, horizontal);
-//        while (window_.isOpen()) {
-//            sf::Event event{};
-//            while (window_.pollEvent(event)) {
-//                if (event.type == sf::Event::Closed)
-//                    window_.close();
-//            }
-//            window_.clear(sf::Color::Black);
-//            window_.draw(f);
-//            window_.display();
-//        }
-    }
 
+namespace s21 {
     template<typename F, typename B>
     void Window<F, B>::Start(F &field, std::vector<B> &buttons) {
         while (window_.isOpen()) {
@@ -36,7 +20,6 @@ namespace s21 {
             window_.display();
         }
     }
-
 
 
 } // s21

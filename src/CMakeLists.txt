@@ -7,12 +7,16 @@ add_library(MazeCreator maze_creator/maze_generator.cpp maze_creator/maze_genera
 target_include_directories(MazeCreator PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/maze_creator)
 
 add_library(View STATIC
+        view/view.h
         view/window.tpp
         view/field.cpp
         view/button.cpp
         view/window.h
         view/field.h
         view/button.h)
+
+find_package(Qt6 REQUIRED COMPONENTS Widgets)
+target_link_libraries(View PRIVATE Qt6::Widgets)
 
 add_library(Controller INTERFACE controller/view_controller.h)
 target_link_libraries(Controller INTERFACE View MazeCreator)

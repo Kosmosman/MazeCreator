@@ -39,15 +39,31 @@ namespace s21 {
 
         bool CheckPosition(sf::Vector2i &position);
 
+    protected:
+        sf::Text text_{font_};
+
     private:
         void draw(sf::RenderTarget &target, const sf::RenderStates &states) const override;
 
         sf::Font font_{};
-        sf::Text text_{font_};
         sf::RectangleShape rect_{};
         // Координаты верхнего левого и нижнего правого углов
         std::vector<int> position_{0, 0, 0, 0};
         kFunctionality func_{kFunctionality::NOTHING};
+    };
+
+    class TextTables : public Button {
+    public:
+        void Add(char ch) { text_.setString(text_.getString() + ch); };
+
+        std::string GetFilename() { return text_.getString(); };
+
+        const bool &CheckCondition() const noexcept { return pressed_; };
+
+        void ChangeCondition() noexcept { pressed_ = !pressed_; };
+
+    private:
+        bool pressed_{};
     };
 
 } // s21
