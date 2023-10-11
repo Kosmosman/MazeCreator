@@ -122,8 +122,10 @@ namespace s21 {
             height_ = new_height;
         }
         if (new_width != width_) {
-            std::for_each(vertical_walls_.begin(), vertical_walls_.end(), [&](std::vector<bool> v){v.resize(new_width);});
-            std::for_each(horizontal_walls_.begin(), horizontal_walls_.end(), [&](std::vector<bool> v){v.resize(new_width);});
+            for (auto &i: vertical_walls_)
+                i.resize(new_width);
+            for (auto &i: horizontal_walls_)
+                i.resize(new_width);
             maze_.resize(new_width);
             width_ = new_width;
         }
@@ -133,6 +135,7 @@ namespace s21 {
     void MazeGenerator::UploadFile(std::string filename) {
         std::ifstream f;
         f.open(filename);
+        counter_ = 0;
         if (f.is_open()) {
             std::cout << "find a file!\n";
             int N, M;
@@ -143,15 +146,16 @@ namespace s21 {
                 for (int j = 0; j < M; ++j) {
                     f >> tmp;
                     vertical_walls_[i][j] = tmp;
+                    counter_ += tmp;
                 }
             }
             for (int i = 0; i < N && f.good(); ++i) {
                 for (int j = 0; j < M; ++j) {
                     f >> tmp;
                     horizontal_walls_[i][j] = tmp;
+                    counter_ += tmp;
                 }
             }
-            GenerateWithoutInit();
         } else {
             std::cout << "Can't open file!\n";
         }

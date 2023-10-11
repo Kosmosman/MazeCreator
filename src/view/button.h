@@ -18,7 +18,11 @@ namespace s21 {
         static constexpr int MAX_WALL_SIZE = 50;
 
         static bool CheckValidCoordinate(std::string &&size) {
-            return stoi(size) <= MAX_WALL_SIZE;
+            try {
+                return stoi(size) <= MAX_WALL_SIZE;
+            } catch (std::invalid_argument&) {
+                return false;
+            }
         }
     };
 
@@ -74,11 +78,12 @@ namespace s21 {
             Y_COORDINATE,
             FILENAME
         };
+
         TextTables(std::string &&font) : Button(std::move(font)) {};
 
         void Add(std::string ch) {
             text_.setString(text_.getString() + ch);
-            std::cout << "Add new key and now frase is << " << text_.getString().toAnsiString() << '\n';
+            std::cout << "Add new key and now fraze is << " << text_.getString().toAnsiString() << '\n';
         };
 
         void Remove() {
@@ -93,7 +98,7 @@ namespace s21 {
 
         void ChangeCondition(bool condition) noexcept { pressed_ = condition; };
 
-        kValue &GetValue() { return func_; } ;
+        kValue &GetValue() { return func_; };
 
         void SetValue(kValue k) { func_ = k; };
 

@@ -82,7 +82,10 @@ namespace s21 {
         void KeyboardPressed(sf::Keyboard::Scan sc) {
             for (auto &i: text_labels_) {
                 if (i.CheckCondition()) {
-                    sc == sf::Keyboard::Scancode::Backspace ? i.Remove() : i.Add(getDescription(sc));
+                    if (sc == sf::Keyboard::Scancode::Backspace)
+                        i.Remove();
+                    else if (i.GetString().size() < 2)
+                        i.Add(getDescription(sc));
                     break;
                 }
             }
@@ -91,6 +94,14 @@ namespace s21 {
     private:
 
         void GenerateHandler() {
+            int x{}, y{};
+            for (auto &i: text_labels_) {
+                if (i.GetValue() == T::kValue::X_COORDINATE)
+                    x = Validator::CheckValidCoordinate(i.GetString()) ? std::stoi(i.GetString()) : 10;
+                if (i.GetValue() == T::kValue::Y_COORDINATE)
+                    y = Validator::CheckValidCoordinate(i.GetString()) ? std::stoi(i.GetString()) : 10;
+            }
+            mg_.Resize(y, x);
             mg_.Generate();
             field_.SetCountOfWalls(mg_.GetCountOfWalls());
             field_.CreateMazeGraph(mg_.GetVerticalWalls(), mg_.GetHorizontalWalls());
