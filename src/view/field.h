@@ -19,6 +19,8 @@ namespace s21 {
         void CreateMazeGraph(const std::vector<std::vector<bool>> &vertical,
                              const std::vector<std::vector<bool>> &horizontal);
 
+        void CreatePath(const std::vector<std::pair<size_t, size_t>>& path);
+
         void SetCountOfWalls(const size_t &count) { count_of_walls_ = count; };
 
     private:

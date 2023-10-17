@@ -7,7 +7,7 @@
 namespace s21 {
     template<typename F, typename B, typename T>
     void Window<F, B, T>::Start() {
-        facade_.Init(window_);
+        facade_.Init();
         while (window_.isOpen()) {
             sf::Event event{};
             while (window_.pollEvent(event)) {

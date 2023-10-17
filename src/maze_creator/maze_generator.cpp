@@ -116,20 +116,15 @@ namespace s21 {
     }
 
     void MazeGenerator::Resize(const size_t &new_height, const size_t &new_width) {
-        if (new_height != height_) {
             vertical_walls_.resize(new_height);
             horizontal_walls_.resize(new_height);
             height_ = new_height;
-        }
-        if (new_width != width_) {
             for (auto &i: vertical_walls_)
                 i.resize(new_width);
             for (auto &i: horizontal_walls_)
                 i.resize(new_width);
             maze_.resize(new_width);
             width_ = new_width;
-        }
-
     }
 
     void MazeGenerator::UploadFile(std::string filename) {

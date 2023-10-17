@@ -6,6 +6,9 @@ set(CMAKE_CXX_STANDARD 17)
 add_library(MazeCreator maze_creator/maze_generator.cpp maze_creator/maze_generator.h)
 target_include_directories(MazeCreator PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/maze_creator)
 
+add_library(Finder finder/finder.cpp finder/finder.h)
+target_include_directories(Finder PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/finder)
+
 add_library(View STATIC
         view/view.h
         view/window.tpp

@@ -68,6 +68,23 @@ namespace s21 {
         walls_.resize(pos);
     }
 
+    void Field::CreatePath(const std::vector<std::pair<size_t, size_t>>& path) {
+        auto vertexes_len = height_ * width_ * 4 + count_of_walls_ * 6;
+        auto new_vertexes_len = vertexes_len + (path.size() - 1) * 6;
+        vertexes_.resize(new_vertexes_len);
+        sf::VertexArray path_vertexes;
+        path_vertexes.setPrimitiveType(sf::PrimitiveType::Triangles);
+        path_vertexes.resize((path.size() - 1) * 6);
+        for (size_t i = 0, pos = 0; i < path.size() - 1; ++i) {
+            auto start_pos = path[i].first * width_ * 4 + path[i].second * 4;
+            auto end_pos = path[i + 1].first * width_ * 4 + path[i + 1].second * 4;
+            // Доделать
+            path_vertexes[pos++] = {(vertexes_[start_pos].position.x + vertexes_[start_pos + 1].position.x) / 2, (vertexes_[start_pos].position.y + vertexes_[start_pos + 1].position.y) / 2};
+        }
+
+
+    }
+
     void Field::StartInitialize() {
         vertexes_.setPrimitiveType(sf::PrimitiveType::LineStrip);
         walls_.setPrimitiveType(sf::PrimitiveType::Triangles);

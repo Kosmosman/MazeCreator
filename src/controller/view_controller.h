@@ -19,8 +19,7 @@ namespace s21 {
 
         ViewController() = default;
 
-        void Init(sf::Window &win) {
-            window_ = &win;
+        void Init() {
             buttons_.reserve(3);
             buttons_.emplace_back("includes/Lato-Italic.ttf", "Find way");
             buttons_.back().Fill({50, 530}, {80, 32}, B::kFunctionality::FIND_WAY);
@@ -31,7 +30,7 @@ namespace s21 {
             buttons_.emplace_back("includes/Lato-Italic.ttf", "Load maze from file");
             buttons_.back().Fill({50, 630}, {135, 32}, B::kFunctionality::LOAD_MAZE);
 
-            text_labels_.reserve(3);
+            text_labels_.reserve(7);
             text_labels_.emplace_back("includes/Lato-Italic.ttf");
             text_labels_.back().Fill({200, 580}, {32, 32}, T::kValue::X_COORDINATE);
 
@@ -41,15 +40,24 @@ namespace s21 {
             text_labels_.emplace_back("includes/Lato-Italic.ttf");
             text_labels_.back().Fill({200, 630}, {250, 32}, T::kValue::FILENAME);
 
-            GenerateHandler();
+            text_labels_.emplace_back("includes/Lato-Italic.ttf");
+            text_labels_.back().Fill({200, 530}, {32, 32}, T::kValue::X_START);
 
-//            std::thread t([this]() { CheckHandler(); });
-//            t.detach();
+            text_labels_.emplace_back("includes/Lato-Italic.ttf");
+            text_labels_.back().Fill({250, 530}, {32, 32}, T::kValue::Y_START);
+
+            text_labels_.emplace_back("includes/Lato-Italic.ttf");
+            text_labels_.back().Fill({300, 530}, {32, 32}, T::kValue::X_END);
+
+            text_labels_.emplace_back("includes/Lato-Italic.ttf");
+            text_labels_.back().Fill({350, 530}, {32, 32}, T::kValue::Y_END);
+
+            GenerateHandler();
         }
 
-        std::vector <B> &GetButtons() { return buttons_; };
+        std::vector<B> &GetButtons() { return buttons_; };
 
-        std::vector <T> &GetLabels() { return text_labels_; };
+        std::vector<T> &GetLabels() { return text_labels_; };
 
         F &GetField() { return field_; };
 
@@ -84,7 +92,7 @@ namespace s21 {
                 if (i.CheckCondition()) {
                     if (sc == sf::Keyboard::Scancode::Backspace)
                         i.Remove();
-                    else if (i.GetString().size() < 2)
+                    else if (i.GetString().size() < 2 || i.GetValue() == T::kValue::FILENAME)
                         i.Add(getDescription(sc));
                     break;
                 }
@@ -108,7 +116,6 @@ namespace s21 {
             std::this_thread::sleep_for(std::chrono::milliseconds(200));
         }
 
-        // NEED FIX IT
         void LoadHandler() {
             for (auto &i: text_labels_) {
                 if (i.GetValue() == T::kValue::FILENAME) {
@@ -120,7 +127,23 @@ namespace s21 {
         }
 
         void FindHandler() {
-
+            int x_start{}, y_start{}, x_end{}, y_end{};
+            for (auto &i: text_labels_) {
+                if (i.GetValue() == T::kValue::X_START) {
+                    x_start = Validator::CheckValidCoordinate(i.GetString()) ? std::stoi(i.GetString()) : 0;
+                }
+                if (i.GetValue() == T::kValue::Y_START) {
+                    y_start = Validator::CheckValidCoordinate(i.GetString()) ? std::stoi(i.GetString()) : 0;
+                }
+                if (i.GetValue() == T::kValue::X_END) {
+                    x_end = Validator::CheckValidCoordinate(i.GetString()) ? std::stoi(i.GetString())
+                                                                           : mg_.GetVerticalWalls()[0].size();
+                }
+                if (i.GetValue() == T::kValue::Y_END) {
+                    y_end = Validator::CheckValidCoordinate(i.GetString()) ? std::stoi(i.GetString())
+                                                                           : mg_.GetVerticalWalls().size();
+                }
+            }
         }
 
         void LabelsHandler(sf::Vector2i &pos) {
@@ -133,9 +156,8 @@ namespace s21 {
             }
         }
 
-        sf::Window *window_;
-        std::vector <B> buttons_;
-        std::vector <T> text_labels_;
+        std::vector<B> buttons_;
+        std::vector<T> text_labels_;
         F field_{};
         MazeGenerator mg_;
     };

@@ -74,6 +74,10 @@ namespace s21 {
     public:
         enum class kValue {
             NOTHING,
+            X_START,
+            Y_START,
+            X_END,
+            Y_END,
             X_COORDINATE,
             Y_COORDINATE,
             FILENAME
