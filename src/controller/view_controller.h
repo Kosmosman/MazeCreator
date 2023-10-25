@@ -7,6 +7,7 @@
 
 #include "view.h"
 #include "maze_generator.h"
+#include "finder.h"
 
 #include <thread>
 #include <chrono>
@@ -136,14 +137,16 @@ namespace s21 {
                     y_start = Validator::CheckValidCoordinate(i.GetString()) ? std::stoi(i.GetString()) : 0;
                 }
                 if (i.GetValue() == T::kValue::X_END) {
-                    x_end = Validator::CheckValidCoordinate(i.GetString()) ? std::stoi(i.GetString())
-                                                                           : mg_.GetVerticalWalls()[0].size();
+                    x_end = Validator::CheckValidCoordinate(i.GetString()) ? std::stoi(i.GetString()): 0;
                 }
                 if (i.GetValue() == T::kValue::Y_END) {
-                    y_end = Validator::CheckValidCoordinate(i.GetString()) ? std::stoi(i.GetString())
-                                                                           : mg_.GetVerticalWalls().size();
+                    y_end = Validator::CheckValidCoordinate(i.GetString()) ? std::stoi(i.GetString()): 0;
                 }
             }
+            std::pair<int, int> end{y_end, x_end};
+            finder_.Init(mg_.GetHorizontalWalls(), mg_.GetVerticalWalls());
+            auto path = finder_.FindWay({y_start, x_start}, end);
+            field_.CreatePath(path);
         }
 
         void LabelsHandler(sf::Vector2i &pos) {
@@ -159,6 +162,7 @@ namespace s21 {
         std::vector<B> buttons_;
         std::vector<T> text_labels_;
         F field_{};
+        Finder finder_{};
         MazeGenerator mg_;
     };
 

@@ -14,20 +14,18 @@ namespace s21 {
     public:
         using size_t = unsigned int;
 
-        enum class Direction {
-            UP, DOWN, LEFT, RIGHT
-        };
+        const std::vector<std::pair<size_t, size_t>> &
+        FindWay(std::pair<size_t, size_t> &&start, const std::pair<size_t, size_t> &end);
 
-        void FindWay(std::pair<size_t, size_t> &&start, const std::pair<size_t, size_t> &end, int counter);
-        void FindEnd(std::pair<size_t, size_t> &&start, const std::pair<size_t, size_t> &end, int counter);
-        void FindStart(const std::pair<size_t, size_t> &end);
         void Init(const std::vector<std::vector<bool>> &h, const std::vector<std::vector<bool>> &v);
 
     private:
-//        void WayDirections(std::pair<size_t, size_t> &pos);
+        void FindEnd(size_t x_pos, size_t y_pos, size_t x_end, size_t y_end, size_t counter);
 
-        const std::vector<std::vector<bool>>* horizontal_{nullptr};
-        const std::vector<std::vector<bool>>* vertical_{nullptr};
+        void FindStart(const std::pair<size_t, size_t> &end);
+
+        const std::vector<std::vector<bool>> *horizontal_{nullptr};
+        const std::vector<std::vector<bool>> *vertical_{nullptr};
         std::vector<std::vector<size_t>> map_{};
         std::vector<std::pair<size_t, size_t>> way_{};
         bool was_found_{};

@@ -19,17 +19,18 @@ add_library(View STATIC
         view/button.h)
 
 add_library(Controller INTERFACE controller/view_controller.h)
-target_link_libraries(Controller INTERFACE View MazeCreator)
+target_link_libraries(Controller INTERFACE View MazeCreator Finder)
 target_link_directories(Controller INTERFACE controller)
 
 target_link_libraries(View PRIVATE sfml-graphics sfml-window sfml-system Controller)
 target_include_directories(View PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/includes/SFML/include)
 target_include_directories(View PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/view)
 target_include_directories(View PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/controller)
+target_include_directories(View PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/finder)
 
 set(SFML_DIR ${CMAKE_CURRENT_SOURCE_DIR}/includes/SFML/include)
 include_directories(${SFML_INCLUDE_DIR})
 add_subdirectory(includes)
 
 add_executable(Maze main.cpp)
-target_link_libraries(Maze PRIVATE MazeCreator View Controller)
+target_link_libraries(Maze PRIVATE MazeCreator View Controller Finder)

@@ -34,6 +34,7 @@ namespace s21 {
                                 const std::vector<std::vector<bool>> &horizontal) {
         CreateField(vertical.size(), vertical[0].size());
         walls_.resize(count_of_walls_ * 6);
+        path_vertexes_.resize(0);
         size_t pos{0};
         for (size_t i = 0; i < height_; ++i) {
             for (size_t j = 0; j < width_; ++j) {
@@ -70,28 +71,35 @@ namespace s21 {
 
     void Field::CreatePath(const std::vector<std::pair<size_t, size_t>>& path) {
         auto vertexes_len = height_ * width_ * 4 + count_of_walls_ * 6;
-        auto new_vertexes_len = vertexes_len + (path.size() - 1) * 6;
-        vertexes_.resize(new_vertexes_len);
-        sf::VertexArray path_vertexes;
-        path_vertexes.setPrimitiveType(sf::PrimitiveType::Triangles);
-        path_vertexes.resize((path.size() - 1) * 6);
+        vertexes_.resize(vertexes_len);
+        path_vertexes_.resize((path.size() - 1) * 6);
         for (size_t i = 0, pos = 0; i < path.size() - 1; ++i) {
             auto start_pos = path[i].first * width_ * 4 + path[i].second * 4;
             auto end_pos = path[i + 1].first * width_ * 4 + path[i + 1].second * 4;
-            // Доделать
-            path_vertexes[pos++] = {(vertexes_[start_pos].position.x + vertexes_[start_pos + 1].position.x) / 2, (vertexes_[start_pos].position.y + vertexes_[start_pos + 1].position.y) / 2};
+            auto left_x{(vertexes_[start_pos].position.x + vertexes_[start_pos + 1].position.x) / 2};
+            auto right_x{(vertexes_[end_pos].position.x + vertexes_[end_pos + 1].position.x) / 2 + 1};
+            auto top_y{(vertexes_[start_pos].position.y + vertexes_[start_pos + 1].position.y) / 2};
+            auto down_y{(vertexes_[end_pos].position.y + vertexes_[end_pos + 1].position.y) / 2 + 1};
+
+            path_vertexes_[pos++].position = {left_x - 1, top_y + 1};
+            path_vertexes_[pos++].position = {right_x + 1, top_y + 1};
+            path_vertexes_[pos++].position = {right_x + 1, down_y - 1};
+
+            path_vertexes_[pos++].position = {right_x + 1, down_y - 1};
+            path_vertexes_[pos++].position = {left_x - 1, down_y - 1};
+            path_vertexes_[pos++].position = {left_x - 1, top_y + 1};
         }
-
-
     }
 
     void Field::StartInitialize() {
         vertexes_.setPrimitiveType(sf::PrimitiveType::LineStrip);
         walls_.setPrimitiveType(sf::PrimitiveType::Triangles);
+        path_vertexes_.setPrimitiveType(sf::PrimitiveType::Triangles);
     }
 
     void Field::draw(sf::RenderTarget &target, const sf::RenderStates &states) const {
         target.draw(vertexes_, states);
         target.draw(walls_, states);
+        target.draw(path_vertexes_, states);
     }
 } // namespace s21

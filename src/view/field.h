@@ -12,7 +12,6 @@ namespace s21 {
     public:
         using size_t = unsigned int;
         static constexpr size_t FIELD_SIDE_SIZE = 500;
-        static constexpr size_t VERTEX_COUNT_MAX = 10000;
 
         Field() { StartInitialize(); }
 
@@ -35,6 +34,7 @@ namespace s21 {
         size_t count_of_walls_{15000};
         sf::VertexArray vertexes_;
         sf::VertexArray walls_;
+        sf::VertexArray path_vertexes_;
     };
 } // namespace s21
 

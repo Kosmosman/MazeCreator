@@ -6,23 +6,29 @@
 
 namespace s21 {
 
-    void Finder::FindWay(std::pair<size_t, size_t> &&start, const std::pair<size_t, size_t> &end, int counter) {
-        FindEnd(std::move(start), end, 1);
+    const std::vector<std::pair<Finder::size_t, Finder::size_t>>&
+    Finder::FindWay(std::pair<size_t, size_t> &&start, const std::pair<size_t, size_t> &end) {
+        FindEnd(start.first, start.second, end.first, end.second, 1);
         FindStart(end);
+        return way_;
     }
 
-    void Finder::FindEnd(std::pair<size_t, size_t> &&start, const std::pair<size_t, size_t> &end, int counter) {
-        map_[start.first][start.second] = counter++;
-        if (start == end) was_found_ = true;
+    void Finder::FindEnd(size_t x_pos, size_t y_pos, size_t x_end, size_t y_end, size_t counter) { // y, x
+        map_[y_pos][x_pos] = counter++;
+        if (x_pos == x_end && y_pos == y_end) was_found_ = true;
         if (was_found_) return;
-        if (start.first > 0 && !(*horizontal_)[start.first - 1][start.second])
-            FindEnd({start.first - 1, start.second}, end, counter);
-        if (start.first < horizontal_->size() - 1 && !(*horizontal_)[start.first][start.second])
-            FindEnd({start.first + 1, start.second}, end, counter);
-        if (start.second > 0 && (*vertical_)[start.first][start.second - 1])
-            FindEnd({start.first, start.second - 1}, end, counter);
-        if (start.second > vertical_[0].size() - 1 && !(*vertical_)[start.first][start.second])
-            FindEnd({start.first, start.second + 1}, end, counter);
+
+        if (x_pos > 0 && !map_[y_pos][x_pos - 1] && !(*vertical_)[y_pos][x_pos - 1])
+            FindEnd(x_pos - 1, y_pos, x_end, y_end, counter);
+
+        if (x_pos < map_[0].size() - 1 && !map_[y_pos][x_pos + 1] && !(*vertical_)[y_pos][x_pos])
+            FindEnd(x_pos + 1, y_pos, x_end, y_end, counter);
+
+        if (y_pos > 0 && !map_[y_pos - 1][x_pos] && !(*horizontal_)[y_pos - 1][x_pos])
+            FindEnd(x_pos, y_pos - 1, x_end, y_end, counter);
+
+        if (y_pos < map_.size() - 1 && !map_[y_pos + 1][x_pos] && !(*horizontal_)[y_pos][x_pos])
+            FindEnd(x_pos, y_pos + 1, x_end, y_end, counter);
     }
 
     void Finder::Init(const std::vector<std::vector<bool>> &h, const std::vector<std::vector<bool>> &v) {
@@ -36,7 +42,8 @@ namespace s21 {
     void Finder::FindStart(const std::pair<size_t, size_t> &end) {
         size_t x{end.second}, y{end.first};
         auto pos = map_[y][x] - 1;
-        way_.resize(map_[y][x]);
+        way_.reserve(map_[y][x]);
+        way_.resize(0);
         way_.emplace_back(y, x);
         while (map_[y][x] != 1) {
             if (x > 0 && map_[y][x - 1] == pos) --x;
