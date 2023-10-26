@@ -9,4 +9,4 @@
 #include "field.h"
 #include "window.h"
 
-#endif //MAZE_VIEW_H
+#endif // MAZE_VIEW_H
