@@ -29,21 +29,25 @@ namespace s21 {
 
         if (y_pos < map_.size() - 1 && !map_[y_pos + 1][x_pos] && !(*horizontal_)[y_pos][x_pos])
             FindEnd(x_pos, y_pos + 1, x_end, y_end, counter);
+        if (!was_found_) map_[y_pos][x_pos] = 0;
     }
 
     void Finder::Init(const std::vector<std::vector<bool>> &h, const std::vector<std::vector<bool>> &v) {
         horizontal_ = &h;
         vertical_ = &v;
         map_.resize(horizontal_->size());
-        for (auto &i: map_)
+        way_.resize(0);
+        was_found_ = false;
+        for (auto &i: map_) {
             i.resize(vertical_[0].size());
+            std::fill(i.begin(), i.end(), 0);
+        }
     }
 
     void Finder::FindStart(const std::pair<size_t, size_t> &end) {
         size_t x{end.second}, y{end.first};
         auto pos = map_[y][x] - 1;
         way_.reserve(map_[y][x]);
-        way_.resize(0);
         way_.emplace_back(y, x);
         while (map_[y][x] != 1) {
             if (x > 0 && map_[y][x - 1] == pos) --x;

@@ -70,23 +70,27 @@ namespace s21 {
     }
 
     void Field::CreatePath(const std::vector<std::pair<size_t, size_t>>& path) {
-        auto vertexes_len = height_ * width_ * 4 + count_of_walls_ * 6;
-        vertexes_.resize(vertexes_len);
         path_vertexes_.resize((path.size() - 1) * 6);
         for (size_t i = 0, pos = 0; i < path.size() - 1; ++i) {
             auto start_pos = path[i].first * width_ * 4 + path[i].second * 4;
             auto end_pos = path[i + 1].first * width_ * 4 + path[i + 1].second * 4;
             auto left_x{(vertexes_[start_pos].position.x + vertexes_[start_pos + 1].position.x) / 2};
-            auto right_x{(vertexes_[end_pos].position.x + vertexes_[end_pos + 1].position.x) / 2 + 1};
-            auto top_y{(vertexes_[start_pos].position.y + vertexes_[start_pos + 1].position.y) / 2};
-            auto down_y{(vertexes_[end_pos].position.y + vertexes_[end_pos + 1].position.y) / 2 + 1};
+            auto right_x{(vertexes_[end_pos].position.x + vertexes_[end_pos + 1].position.x) / 2};
+            auto top_y{(vertexes_[start_pos + 1].position.y + vertexes_[start_pos + 2].position.y) / 2};
+            auto down_y{(vertexes_[end_pos + 1].position.y + vertexes_[end_pos + 2].position.y) / 2};
 
+            path_vertexes_[pos].color = sf::Color::Red;
             path_vertexes_[pos++].position = {left_x - 1, top_y + 1};
+            path_vertexes_[pos].color = sf::Color::Red;
             path_vertexes_[pos++].position = {right_x + 1, top_y + 1};
+            path_vertexes_[pos].color = sf::Color::Red;
             path_vertexes_[pos++].position = {right_x + 1, down_y - 1};
 
+            path_vertexes_[pos].color = sf::Color::Red;
             path_vertexes_[pos++].position = {right_x + 1, down_y - 1};
+            path_vertexes_[pos].color = sf::Color::Red;
             path_vertexes_[pos++].position = {left_x - 1, down_y - 1};
+            path_vertexes_[pos].color = sf::Color::Red;
             path_vertexes_[pos++].position = {left_x - 1, top_y + 1};
         }
     }
