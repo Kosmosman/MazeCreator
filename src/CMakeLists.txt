@@ -15,14 +15,15 @@ FetchContent_MakeAvailable(googletest)
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 
-add_library(MazeCreator maze_creator/maze_generator.cpp maze_creator/maze_generator.h)
-target_include_directories(MazeCreator PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/maze_creator)
+add_library(MazeCreator model/maze_creator/maze_generator.cpp model/maze_creator/maze_generator.h)
+target_include_directories(MazeCreator PUBLIC model/maze_creator)
+target_include_directories(MazeCreator PUBLIC model/randomizer)
 
-add_library(Finder finder/finder.cpp finder/finder.h)
-target_include_directories(Finder PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/finder)
+add_library(Finder model/finder/finder.cpp model/finder/finder.h)
+target_include_directories(Finder PUBLIC model/finder)
 
-add_library(Validator INTERFACE validator/validator.h)
-target_include_directories(Validator INTERFACE validator)
+add_library(Validator INTERFACE model/validator/validator.h)
+target_include_directories(Validator INTERFACE model/validator)
 
 add_library(View STATIC
         view/facade.h
@@ -46,7 +47,6 @@ target_link_libraries(View PRIVATE sfml-graphics sfml-window sfml-system Control
 target_include_directories(View PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/includes/SFML/include)
 target_include_directories(View PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/view)
 target_include_directories(View PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/controller)
-target_include_directories(View PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/finder)
 
 set(SFML_DIR ${CMAKE_CURRENT_SOURCE_DIR}/includes/SFML/include)
 include_directories(${SFML_INCLUDE_DIR})

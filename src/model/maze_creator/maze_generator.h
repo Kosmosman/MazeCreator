@@ -7,7 +7,7 @@
 
 #include <vector>
 #include <random>
-#include "../randomizer/randomizer.h"
+#include "randomizer.h"
 
 namespace s21 {
 

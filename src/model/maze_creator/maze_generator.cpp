@@ -148,8 +148,7 @@ namespace s21 {
                     counter_ += tmp;
                 }
             }
-        } else {
-            std::cout << "Can't open file!\n";
+            f.close();
         }
     }
 
