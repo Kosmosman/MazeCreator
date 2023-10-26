@@ -9,6 +9,7 @@
 #include "maze_generator.h"
 #include "finder.h"
 
+#include <SFML/Graphics/Font.hpp>
 #include <thread>
 #include <chrono>
 
@@ -22,35 +23,35 @@ namespace s21 {
 
         void Init() {
             buttons_.reserve(3);
-            buttons_.emplace_back("includes/Lato-Italic.ttf", "Find way");
-            buttons_.back().Fill({50, 530}, {80, 32}, B::kFunctionality::FIND_WAY);
+            buttons_.emplace_back("../view/font/Lato-Italic.ttf", "Find way (x, y) (x, y)");
+            buttons_.back().Fill({50, 530}, {132, 32}, B::kFunctionality::FIND_WAY);
 
-            buttons_.emplace_back("includes/Lato-Italic.ttf", "Generate maze (x, y)");
+            buttons_.emplace_back("../view/font/Lato-Italic.ttf", "Generate maze (x, y)");
             buttons_.back().Fill({50, 580}, {132, 32}, B::kFunctionality::GENERATE_MAZE);
 
-            buttons_.emplace_back("includes/Lato-Italic.ttf", "Load maze from file");
+            buttons_.emplace_back("../view/font/Lato-Italic.ttf", "Load maze from file");
             buttons_.back().Fill({50, 630}, {135, 32}, B::kFunctionality::LOAD_MAZE);
 
             text_labels_.reserve(7);
-            text_labels_.emplace_back("includes/Lato-Italic.ttf");
+            text_labels_.emplace_back("../view/font/Lato-Italic.ttf");
             text_labels_.back().Fill({200, 580}, {32, 32}, T::kValue::X_COORDINATE);
 
-            text_labels_.emplace_back("includes/Lato-Italic.ttf");
+            text_labels_.emplace_back("../view/font/Lato-Italic.ttf");
             text_labels_.back().Fill({250, 580}, {32, 32}, T::kValue::Y_COORDINATE);
 
-            text_labels_.emplace_back("includes/Lato-Italic.ttf");
+            text_labels_.emplace_back("../view/font/Lato-Italic.ttf");
             text_labels_.back().Fill({200, 630}, {250, 32}, T::kValue::FILENAME);
 
-            text_labels_.emplace_back("includes/Lato-Italic.ttf");
+            text_labels_.emplace_back("../view/font/Lato-Italic.ttf");
             text_labels_.back().Fill({200, 530}, {32, 32}, T::kValue::X_START);
 
-            text_labels_.emplace_back("includes/Lato-Italic.ttf");
+            text_labels_.emplace_back("../view/font/Lato-Italic.ttf");
             text_labels_.back().Fill({250, 530}, {32, 32}, T::kValue::Y_START);
 
-            text_labels_.emplace_back("includes/Lato-Italic.ttf");
+            text_labels_.emplace_back("../view/font/Lato-Italic.ttf");
             text_labels_.back().Fill({300, 530}, {32, 32}, T::kValue::X_END);
 
-            text_labels_.emplace_back("includes/Lato-Italic.ttf");
+            text_labels_.emplace_back("../view/font/Lato-Italic.ttf");
             text_labels_.back().Fill({350, 530}, {32, 32}, T::kValue::Y_END);
 
             GenerateHandler();

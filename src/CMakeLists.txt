@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.25)
+cmake_minimum_required(VERSION 3.15)
 project(Maze)
 
 set(CMAKE_CXX_STANDARD 17)
@@ -21,6 +21,10 @@ add_library(View STATIC
 add_library(Controller INTERFACE controller/view_controller.h)
 target_link_libraries(Controller INTERFACE View MazeCreator Finder)
 target_link_directories(Controller INTERFACE controller)
+
+set(FONT_DIR ${CMAKE_CURRENT_SOURCE_DIR}/view/font)
+include_directories(${FONT_DIR})
+
 
 target_link_libraries(View PRIVATE sfml-graphics sfml-window sfml-system Controller)
 target_include_directories(View PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/includes/SFML/include)

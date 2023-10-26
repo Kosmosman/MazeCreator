@@ -3,6 +3,7 @@
 //
 
 #include "finder.h"
+#include <climits>
 
 namespace s21 {
 
@@ -29,7 +30,6 @@ namespace s21 {
 
         if (y_pos < map_.size() - 1 && !map_[y_pos + 1][x_pos] && !(*horizontal_)[y_pos][x_pos])
             FindEnd(x_pos, y_pos + 1, x_end, y_end, counter);
-        if (!was_found_) map_[y_pos][x_pos] = 0;
     }
 
     void Finder::Init(const std::vector<std::vector<bool>> &h, const std::vector<std::vector<bool>> &v) {
@@ -50,10 +50,10 @@ namespace s21 {
         way_.reserve(map_[y][x]);
         way_.emplace_back(y, x);
         while (map_[y][x] != 1) {
-            if (x > 0 && map_[y][x - 1] == pos) --x;
-            else if (x < map_[0].size() - 1 && map_[y][x + 1] == pos) ++x;
-            else if (y > 0 && map_[y - 1][x] == pos) --y;
-            else if (y < map_.size() - 1 && map_[y + 1][x] == pos) ++y;
+            if (x > 0 && map_[y][x - 1] == pos && !(*vertical_)[y][x - 1]) --x;
+            else if (x < map_[0].size() - 1 && map_[y][x + 1] == pos && !(*vertical_)[y][x]) ++x;
+            else if (y > 0 && map_[y - 1][x] == pos && !(*horizontal_)[y - 1][x]) --y;
+            else if (y < map_.size() - 1 && map_[y + 1][x] == pos && !(*horizontal_)[y][x]) ++y;
             --pos, way_.emplace_back(y, x);
         }
     }

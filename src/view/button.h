@@ -83,12 +83,9 @@ namespace s21 {
             FILENAME
         };
 
-        TextTables(std::string &&font) : Button(std::move(font)) {};
+        explicit TextTables(std::string &&font) : Button(std::move(font)) {};
 
-        void Add(std::string ch) {
-            text_.setString(text_.getString() + ch);
-            std::cout << "Add new key and now fraze is << " << text_.getString().toAnsiString() << '\n';
-        };
+        void Add(std::string ch) { text_.setString(text_.getString() + ch); };
 
         void Remove() {
             if (text_.getString().getSize() > 0) {
