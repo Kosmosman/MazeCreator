@@ -10,10 +10,16 @@ FetchContent_Declare(
         GIT_TAG        release-1.11.0
 )
 
-FetchContent_MakeAvailable(googletest)
+FetchContent_Declare(
+        sfml
+        GIT_REPOSITORY https://github.com/SFML/SFML.git
+        GIT_TAG        master
+)
+
+FetchContent_MakeAvailable(googletest sfml)
 
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
-FetchContent_MakeAvailable(googletest)
+
 
 add_library(MazeCreator model/maze_creator/maze_generator.cpp model/maze_creator/maze_generator.h)
 target_include_directories(MazeCreator PUBLIC model/maze_creator)
@@ -43,14 +49,14 @@ set(FONT_DIR ${CMAKE_CURRENT_SOURCE_DIR}/view/font)
 include_directories(${FONT_DIR})
 
 
-target_link_libraries(View PRIVATE sfml-graphics sfml-window sfml-system Controller)
-target_include_directories(View PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/includes/SFML/include)
+target_link_libraries(View PUBLIC sfml-graphics sfml-window sfml-system Controller)
+#target_include_directories(View PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/includes/SFML/include)
 target_include_directories(View PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/view)
 target_include_directories(View PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/controller)
 
-set(SFML_DIR ${CMAKE_CURRENT_SOURCE_DIR}/includes/SFML/include)
-include_directories(${SFML_INCLUDE_DIR})
-add_subdirectory(includes)
+#set(SFML_DIR ${CMAKE_CURRENT_SOURCE_DIR}/includes/SFML/include)
+#include_directories(${SFML_INCLUDE_DIR})
+#add_subdirectory(includes)
 
 add_executable(Maze main.cpp)
 target_link_libraries(Maze PRIVATE MazeCreator View Controller Finder)
