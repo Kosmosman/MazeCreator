@@ -5,9 +5,7 @@
 #include "window.h"
 
 namespace s21 {
-    template<typename F, typename B, typename T>
-    void Window<F, B, T>::Start() {
-        facade_.Init();
+    void Window::Start() {
         while (window_.isOpen()) {
             sf::Event event{};
             while (window_.pollEvent(event)) {
@@ -15,17 +13,17 @@ namespace s21 {
                     window_.close();
                 } else if (event.type == sf::Event::MouseButtonPressed) {
                     if (event.mouseButton.button == sf::Mouse::Left) {
-                        facade_.MousePressed({event.mouseButton.x, event.mouseButton.y});
+                        facade_->MousePressed({event.mouseButton.x, event.mouseButton.y});
                     }
                 } else if (event.type == sf::Event::KeyPressed) {
-                    facade_.KeyboardPressed(event.key.scancode);
+                    facade_->KeyboardPressed(event.key.scancode);
                 }
             }
             window_.clear(sf::Color::Black);
-            window_.draw(facade_.GetField());
-            for (auto &i: facade_.GetButtons())
+            window_.draw(facade_->GetField());
+            for (auto &i: facade_->GetButtons())
                 window_.draw(i);
-            for (auto &i: facade_.GetLabels())
+            for (auto &i: facade_->GetLabels())
                 window_.draw(i);
             window_.display();
         }

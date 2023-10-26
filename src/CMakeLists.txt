@@ -3,13 +3,29 @@ project(Maze)
 
 set(CMAKE_CXX_STANDARD 17)
 
+include(FetchContent)
+FetchContent_Declare(
+        googletest
+        GIT_REPOSITORY https://github.com/google/googletest.git
+        GIT_TAG        release-1.11.0
+)
+
+FetchContent_MakeAvailable(googletest)
+
+set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+FetchContent_MakeAvailable(googletest)
+
 add_library(MazeCreator maze_creator/maze_generator.cpp maze_creator/maze_generator.h)
 target_include_directories(MazeCreator PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/maze_creator)
 
 add_library(Finder finder/finder.cpp finder/finder.h)
 target_include_directories(Finder PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/finder)
 
+add_library(Validator INTERFACE validator/validator.h)
+target_include_directories(Validator INTERFACE validator)
+
 add_library(View STATIC
+        view/facade.h
         view/view.h
         view/window.tpp
         view/field.cpp
@@ -18,8 +34,8 @@ add_library(View STATIC
         view/field.h
         view/button.h)
 
-add_library(Controller INTERFACE controller/view_controller.h)
-target_link_libraries(Controller INTERFACE View MazeCreator Finder)
+add_library(Controller INTERFACE controller/controller.h)
+target_link_libraries(Controller INTERFACE MazeCreator Finder Validator)
 target_link_directories(Controller INTERFACE controller)
 
 set(FONT_DIR ${CMAKE_CURRENT_SOURCE_DIR}/view/font)
@@ -38,3 +54,11 @@ add_subdirectory(includes)
 
 add_executable(Maze main.cpp)
 target_link_libraries(Maze PRIVATE MazeCreator View Controller Finder)
+
+enable_testing()
+add_executable(Test test/test.cpp)
+target_include_directories(Test PRIVATE test)
+target_include_directories(Test PRIVATE controller)
+target_link_libraries(Test PRIVATE Finder Controller GTest::gtest_main)
+include(GoogleTest)
+gtest_discover_tests(Test)

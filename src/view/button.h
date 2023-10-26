@@ -11,21 +11,6 @@
 
 namespace s21 {
 
-    class Validator {
-    public:
-        Validator() = default;
-
-        static constexpr int MAX_WALL_SIZE = 50;
-
-        static bool CheckValidCoordinate(std::string &&size) {
-            try {
-                return stoi(size) <= MAX_WALL_SIZE;
-            } catch (std::invalid_argument&) {
-                return false;
-            }
-        }
-    };
-
     class Button : public sf::Drawable {
     public:
         enum class kFunctionality {
@@ -85,7 +70,7 @@ namespace s21 {
 
         explicit TextTables(std::string &&font) : Button(std::move(font)) {};
 
-        void Add(std::string ch) { text_.setString(text_.getString() + ch); };
+        void Add(std::string&& ch) { text_.setString(text_.getString() + ch); };
 
         void Remove() {
             if (text_.getString().getSize() > 0) {

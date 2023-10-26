@@ -2,14 +2,14 @@
 // Created by Joaquina Daeron on 10/5/23.
 //
 
-#include <maze_generator.h>
-
-#include <iostream>
 #include <window.h>
-#include "controller/view_controller.h"
 
 int main() {
-    s21::Window<> w;
+    s21::Finder finder;
+    s21::MazeGenerator mg;
+    s21::Controller controller(&finder, &mg);
+    s21::Facade facade(&controller);
+    s21::Window w(&facade);
     w.Start();
     return 0;
 }

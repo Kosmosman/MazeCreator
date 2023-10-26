@@ -3,7 +3,6 @@
 //
 
 #include "finder.h"
-#include <climits>
 
 namespace s21 {
 
@@ -54,6 +53,7 @@ namespace s21 {
             else if (x < map_[0].size() - 1 && map_[y][x + 1] == pos && !(*vertical_)[y][x]) ++x;
             else if (y > 0 && map_[y - 1][x] == pos && !(*horizontal_)[y - 1][x]) --y;
             else if (y < map_.size() - 1 && map_[y + 1][x] == pos && !(*horizontal_)[y][x]) ++y;
+            else break;
             --pos, way_.emplace_back(y, x);
         }
     }

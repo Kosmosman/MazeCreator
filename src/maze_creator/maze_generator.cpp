@@ -19,9 +19,6 @@ namespace s21 {
 
     void MazeGenerator::Generate() {
         Init();
-        GenerateWithoutInit();
-    }
-    void MazeGenerator::GenerateWithoutInit() {
         for (size_t i = 0; i < height_ - 1; ++i) {
             CreateVerticalWalls(i);
             CreateHorizontalWalls(i);
@@ -127,7 +124,7 @@ namespace s21 {
             width_ = new_width;
     }
 
-    void MazeGenerator::UploadFile(std::string filename) {
+    void MazeGenerator::UploadFile(std::string &&filename) {
         std::ifstream f;
         f.open(filename);
         counter_ = 0;

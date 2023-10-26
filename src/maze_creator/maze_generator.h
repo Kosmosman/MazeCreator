@@ -18,21 +18,20 @@ namespace s21 {
         static constexpr size_t DEFAULT_VALUE = 10;
 
         MazeGenerator();
+
         explicit MazeGenerator(const size_t &width, const size_t &height);
 
         void Generate();
-
-        void GenerateWithoutInit();
 
         const matrix_bool &GetVerticalWalls() { return vertical_walls_; };
 
         const matrix_bool &GetHorizontalWalls() { return horizontal_walls_; };
 
-        const size_t& GetCountOfWalls() {return  count_of_walls_;};
+        const size_t &GetCountOfWalls() { return count_of_walls_; };
 
-        void Resize(const size_t& new_height, const size_t& new_width);
+        void Resize(const size_t &new_height, const size_t &new_width);
 
-        void UploadFile(std::string);
+        void UploadFile(std::string&&);
 
 
     private:
@@ -46,17 +45,17 @@ namespace s21 {
 
         void CreateLastRow();
 
-        void MergeSet(const size_t& col);
+        void MergeSet(const size_t &col);
 
         void CopyRow(const size_t &);
 
-        size_t height_;
-        size_t width_;
+        size_t height_{};
+        size_t width_{};
         size_t counter_{};
         size_t count_of_walls_{};
-        std::vector<size_t> maze_;
-        matrix_bool horizontal_walls_;
-        matrix_bool vertical_walls_;
+        std::vector<size_t> maze_{};
+        matrix_bool horizontal_walls_{};
+        matrix_bool vertical_walls_{};
         Randomizer r_{};
     };
 

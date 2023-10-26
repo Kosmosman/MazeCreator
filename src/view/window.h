@@ -6,25 +6,21 @@
 #define MAZE_WINDOW_H
 
 #include <SFML/Graphics.hpp>
-#include "view.h"
-#include "view_controller.h"
+#include "facade.h"
 
 namespace s21 {
 
-    template<typename F = Field, typename B = Button, typename T = TextTables>
     class Window {
     public:
-        Window() : window_(sf::VideoMode({width_, height_}), "Maze") {};
+        explicit Window(Facade* facade) : window_(sf::VideoMode({width_, height_}), "Maze"), facade_(facade) {};
 
         void Start();
-
-        bool Status() { return window_.isOpen(); };
 
     private:
         const unsigned int width_{500};
         const unsigned int height_{700};
         sf::RenderWindow window_;
-        ViewController<F, B, T> facade_{};
+        Facade* facade_{};
     };
 
 } // s21
