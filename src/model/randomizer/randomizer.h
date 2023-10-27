@@ -9,20 +9,18 @@
 
 namespace s21 {
 
-    class Randomizer {
-    public:
+class Randomizer {
+ public:
+  explicit Randomizer() : mt_(rd_()), dist_(0, 1){};
 
-        explicit Randomizer() : mt_(rd_()), dist_(0, 1) {};
+  bool GenerateBool() { return dist_(mt_) % 2 == 0; };
 
-        bool GenerateBool() { return dist_(mt_) % 2 == 0; };
+ private:
+  std::random_device rd_{};
+  std::mt19937 mt_;
+  std::uniform_int_distribution<int> dist_;
+};
 
+}  // namespace s21
 
-    private:
-        std::random_device rd_{};
-        std::mt19937 mt_;
-        std::uniform_int_distribution<int> dist_;
-    };
-
-} // s21
-
-#endif //MAZE_RANDOMIZER_H
+#endif  // MAZE_RANDOMIZER_H

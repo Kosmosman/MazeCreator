@@ -12,8 +12,8 @@ start:
 clean:
 	rm -rf build
 
-dist:
-	cd .. && tar -czvf archive.tar.gz src/
+dist: clean
+	cd .. && tar -czvf archive.tar.gz src
 
 tests:
 	cmake -S . -B build
@@ -24,7 +24,7 @@ leaks: tests
 
 clang:
 	cp ../materials/linters/.clang-format ../src/.clang-format
-	clang-format -style=Google -n controller/* model/* test/* view/*
+	clang-format -style=Google -n controller/* model/finder/* model/maze_creator/* model/randomizer/* model/validator/* test/* view/*.cpp view/*.h view/*.tpp
 	rm -rf .clang-format
 
 dvi:
