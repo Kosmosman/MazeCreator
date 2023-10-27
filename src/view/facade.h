@@ -166,7 +166,7 @@ class Facade {
     } catch (std::invalid_argument &e) {
       return;
     }
-    auto path = controller_->GetWay({y_start, x_start}, {y_end, x_end});
+    auto path = controller_->GetWay({x_start, y_start}, {x_end, y_end});
     field_->CreatePath(path);
   }
 

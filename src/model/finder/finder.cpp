@@ -48,7 +48,7 @@ void Finder::Init(const std::vector<std::vector<bool>> &h,
 }
 
 void Finder::FindStart(const std::pair<size_t, size_t> &end) {
-  size_t x{end.second}, y{end.first};
+  size_t x{end.first}, y{end.second};
   auto pos = map_[y][x] - 1;
   way_.reserve(map_[y][x]);
   way_.emplace_back(y, x);
