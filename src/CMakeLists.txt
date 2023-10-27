@@ -50,13 +50,8 @@ include_directories(${FONT_DIR})
 
 
 target_link_libraries(View PUBLIC sfml-graphics sfml-window sfml-system Controller)
-#target_include_directories(View PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/includes/SFML/include)
 target_include_directories(View PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/view)
 target_include_directories(View PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/controller)
-
-#set(SFML_DIR ${CMAKE_CURRENT_SOURCE_DIR}/includes/SFML/include)
-#include_directories(${SFML_INCLUDE_DIR})
-#add_subdirectory(includes)
 
 add_executable(Maze main.cpp)
 target_link_libraries(Maze PRIVATE MazeCreator View Controller Finder)

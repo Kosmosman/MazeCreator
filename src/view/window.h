@@ -5,26 +5,27 @@
 #ifndef MAZE_WINDOW_H
 #define MAZE_WINDOW_H
 
-#include "facade.h"
 #include <SFML/Graphics.hpp>
+
+#include "facade.h"
 
 namespace s21 {
 
 class Window {
-public:
+ public:
   explicit Window(Facade *facade)
       : window_(sf::VideoMode({width_, height_}), "Maze"), facade_(facade){};
 
   void Start();
 
-private:
+ private:
   const unsigned int width_{500};
   const unsigned int height_{700};
   sf::RenderWindow window_;
   Facade *facade_{};
 };
 
-} // namespace s21
+}  // namespace s21
 #include "window.tpp"
 
-#endif // MAZE_WINDOW_H
+#endif  // MAZE_WINDOW_H

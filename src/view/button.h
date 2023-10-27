@@ -12,7 +12,7 @@
 namespace s21 {
 
 class Button : public sf::Drawable {
-public:
+ public:
   enum class kFunctionality { NOTHING, LOAD_MAZE, GENERATE_MAZE, FIND_WAY };
 
   Button() : text_{font_} {};
@@ -39,7 +39,7 @@ public:
 
   bool CheckPosition(sf::Vector2i &position);
 
-protected:
+ protected:
   void draw(sf::RenderTarget &target,
             const sf::RenderStates &states) const override;
 
@@ -49,12 +49,12 @@ protected:
   // Координаты верхнего левого и нижнего правого углов
   std::vector<int> position_{0, 0, 0, 0};
 
-private:
+ private:
   kFunctionality func_{kFunctionality::NOTHING};
 };
 
 class TextTables : public Button {
-public:
+ public:
   enum class kValue {
     NOTHING,
     X_START,
@@ -91,11 +91,11 @@ public:
             kValue value = kValue::NOTHING, sf::Color text = sf::Color::Black,
             sf::Color rect = sf::Color::White);
 
-private:
+ private:
   bool pressed_{};
   kValue func_{kValue::NOTHING};
 };
 
-} // namespace s21
+}  // namespace s21
 
-#endif // MAZE_BUTTON_H
+#endif  // MAZE_BUTTON_H

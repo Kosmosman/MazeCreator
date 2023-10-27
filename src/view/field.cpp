@@ -119,4 +119,4 @@ void Field::draw(sf::RenderTarget &target,
   target.draw(walls_, states);
   target.draw(path_vertexes_, states);
 }
-} // namespace s21
+}  // namespace s21

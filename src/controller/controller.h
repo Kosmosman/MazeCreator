@@ -5,17 +5,17 @@
 #ifndef MAZE_CONTROLLER_H
 #define MAZE_CONTROLLER_H
 
+#include <chrono>
+#include <thread>
+
 #include "finder.h"
 #include "maze_generator.h"
 #include "validator.h"
 
-#include <chrono>
-#include <thread>
-
 namespace s21 {
 
 class Controller {
-public:
+ public:
   using size_t = unsigned int;
 
   Controller(Finder *finder, MazeGenerator *mg) : finder_{finder}, mg_{mg} {};
@@ -34,8 +34,8 @@ public:
     return mg_->GetHorizontalWalls();
   };
 
-  const std::vector<std::pair<size_t, size_t>> &
-  GetWay(std::pair<size_t, size_t> &&start, std::pair<size_t, size_t> &&end) {
+  const std::vector<std::pair<size_t, size_t>> &GetWay(
+      std::pair<size_t, size_t> &&start, std::pair<size_t, size_t> &&end) {
     try {
       IsValidPositions(
           {static_cast<int>(start.first), static_cast<int>(start.second),
@@ -59,7 +59,7 @@ public:
 
   void UploadFile(std::string &&s) { mg_->UploadFile(std::move(s)); };
 
-private:
+ private:
   void IsValidPositions(std::vector<int> &&positions) {
     try {
       Validator::CheckValidBorders(std::move(positions),
@@ -82,6 +82,6 @@ private:
   MazeGenerator *mg_{};
 };
 
-} // namespace s21
+}  // namespace s21
 
-#endif // MAZE_CONTROLLER_H
+#endif  // MAZE_CONTROLLER_H

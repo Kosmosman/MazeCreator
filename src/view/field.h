@@ -9,7 +9,7 @@
 
 namespace s21 {
 class Field : public sf::Drawable {
-public:
+ public:
   using size_t = unsigned int;
   static constexpr size_t FIELD_SIDE_SIZE = 500;
 
@@ -22,7 +22,7 @@ public:
 
   void SetCountOfWalls(const size_t &count) { count_of_walls_ = count; };
 
-private:
+ private:
   void draw(sf::RenderTarget &target,
             const sf::RenderStates &states) const override;
 
@@ -38,6 +38,6 @@ private:
   sf::VertexArray walls_;
   sf::VertexArray path_vertexes_;
 };
-} // namespace s21
+}  // namespace s21
 
-#endif // MAZE_FIELD_H
+#endif  // MAZE_FIELD_H

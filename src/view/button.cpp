@@ -3,6 +3,7 @@
 //
 
 #include "button.h"
+
 #include <iostream>
 
 namespace s21 {
@@ -17,8 +18,7 @@ Button::Button(std::string &&place, std::string &&text) {
 }
 
 Button::Button(std::string &&font) {
-  if (!font_.loadFromFile(font))
-    std::cout << "Error!";
+  if (!font_.loadFromFile(font)) std::cout << "Error!";
   text_.setFont(font_);
 }
 
@@ -71,4 +71,4 @@ void TextTables::Fill(sf::Vector2f position, sf::Vector2f size,
   SetColor(text, rect);
   SetValue(value);
 }
-} // namespace s21
+}  // namespace s21

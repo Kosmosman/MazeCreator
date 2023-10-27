@@ -21,12 +21,10 @@ void Window::Start() {
     }
     window_.clear(sf::Color::Black);
     window_.draw(facade_->GetField());
-    for (auto &i : facade_->GetButtons())
-      window_.draw(i);
-    for (auto &i : facade_->GetLabels())
-      window_.draw(i);
+    for (auto &i : facade_->GetButtons()) window_.draw(i);
+    for (auto &i : facade_->GetLabels()) window_.draw(i);
     window_.display();
   }
 }
 
-} // namespace s21
+}  // namespace s21
