@@ -23,7 +23,6 @@ leaks: tests
 	cd build && leaks -atExit -- ./Test
 
 clang:
-	cp ../materials/linters/.clang-format ../src/.clang-format
 	clang-format -style=Google -n controller/* model/finder/* model/maze_creator/* model/randomizer/* model/validator/* test/* view/*.cpp view/*.h view/*.tpp
 	rm -rf .clang-format
 
