@@ -2,7 +2,7 @@
 
 Implementation of the Maze project.
 
-![Maze](images/Maze.png)
+<img src="images/Maze.png" width="500" height="700" alt="Base maze 10x10">
 
 ## Build and install
 
@@ -55,15 +55,16 @@ Mainwindow have 3 buttons:
 
 - Find way - create way between two points with (x, y) positions. Positions are limited by the size of the maze.
 
-![MazeWithWay](images/MazeWithWay.png)
+<img src="images/MazeWithWay.png" width="500" height="700" alt="Maze with way">
 
 - Generate maze - create maze with given size. Max size 50x50.
 
-![MazeSize50](images/Maze50.png)
+<img src="images/Maze50.png" width="500" height="700" alt="Maze 50x50">
 
 - Load from file - load maze image from file, maze should look like this:
 
 Height Width
+
 (Positions of vertical walls)
 
 (Positions of horizontal walls)
@@ -71,14 +72,23 @@ Height Width
 Example:
 
 4 4
+
 0 1 1 1
+
 1 0 1 1
+
 0 0 0 1
+
 1 1 0 1
 
+(Empty string)
+
 0 0 0 0
+
 0 1 1 0
+
 1 0 1 0
+
 1 1 1 1
 
-![LoadMazeFromFile](images/LoadMaze.png)
+<img src="images/LoadMaze.png" width="500" height="700" alt="Loaded maze from file">
